@@ -2,7 +2,6 @@ require_relative 'problem'
 require 'minitest/autorun'
 
 describe BoxIDChecksum do
-
   describe "two of any letter count" do
     it "returns true if letter appears exactly twice" do
       assert_equal true, BoxIDChecksum.two_of_any_letter_count('aa')
@@ -46,17 +45,17 @@ describe BoxIDChecksum do
     end
 
     it "finds two with count of two" do
-      collection = ['aa', 'bb']
+      collection = %w[aa bb]
       assert_equal 2, BoxIDChecksum.count_occurrences_for_collection(collection, 2)
     end
 
     it "finds none with count of two and collection of threes" do
-      collection = ['aaa', 'bbb']
+      collection = %w[aaa bbb]
       assert_equal 0, BoxIDChecksum.count_occurrences_for_collection(collection, 2)
     end
 
     it "finds two with count of three" do
-      collection = ['aaa', 'bbb']
+      collection = %w[aaa bbb]
       assert_equal 2, BoxIDChecksum.count_occurrences_for_collection(collection, 3)
     end
 
@@ -69,31 +68,71 @@ describe BoxIDChecksum do
 
   describe "get checksum for collection" do
     it "returns a 0 checksum with only two-letter occurrences" do
-      collection = ['aa', 'bb', 'cc']
+      collection = %w[aa bb cc]
       assert_equal 3, BoxIDChecksum.count_occurrences_for_collection(collection, 2)
       assert_equal 0, BoxIDChecksum.count_occurrences_for_collection(collection, 3)
       assert_equal 0, BoxIDChecksum.get_checksum_for_collection(collection)
     end
 
     it "returns a 0 checksum with only three-letter occurrences" do
-      collection = ['aaa', 'bbb', 'ccc']
+      collection = %w[aaa bbb ccc]
       assert_equal 0, BoxIDChecksum.count_occurrences_for_collection(collection, 2)
       assert_equal 3, BoxIDChecksum.count_occurrences_for_collection(collection, 3)
       assert_equal 0, BoxIDChecksum.get_checksum_for_collection(collection)
     end
 
     it "returns 1 with one of each type of occurrence" do
-      collection = ['aa', 'bbb']
+      collection = %w[aa bbb]
       assert_equal 1, BoxIDChecksum.count_occurrences_for_collection(collection, 2)
       assert_equal 1, BoxIDChecksum.count_occurrences_for_collection(collection, 3)
       assert_equal 1, BoxIDChecksum.get_checksum_for_collection(collection)
     end
 
     it "works for the example case from the problem spec" do
-      collection = ['abcdef', 'bababc', 'abbcde', 'abcccd', 'aabcdd', 'abcdee', 'ababab']
+      collection = %w[abcdef bababc abbcde abcccd aabcdd abcdee ababab]
       assert_equal 4, BoxIDChecksum.count_occurrences_for_collection(collection, 2)
       assert_equal 3, BoxIDChecksum.count_occurrences_for_collection(collection, 3)
       assert_equal 12, BoxIDChecksum.get_checksum_for_collection(collection)
+    end
+  end
+
+  describe "difference count of IDs" do
+    it "returns 0 for identical strings" do
+      a = 'abc'
+      b = 'abc'
+      assert_equal 0, BoxIDChecksum.difference_count_of_ids(a, b)
+    end
+
+    it "returns 1 if words differ by 1 letter each" do
+      a = 'abce'
+      b = 'abcd'
+      assert_equal 1, BoxIDChecksum.difference_count_of_ids(a, b)
+    end
+  end
+
+  describe "find nearly identical IDs for collection" do
+    it "returns two IDs that only differ by 1 letter" do
+      collection = %w[aaab aaac bbbb]
+      expected = { id1: 'aaab', id2: 'aaac' }
+      assert_equal expected, BoxIDChecksum.find_nearly_identical_ids_for_collection(collection)
+    end
+
+    it "returns an empty hash if no IDs are identical" do
+      collection = %w[aaaa bbbb cccc]
+      expected = {}
+      assert_equal expected, BoxIDChecksum.find_nearly_identical_ids_for_collection(collection)
+    end
+
+    it "returns an empty hash if IDs aren't close enough to being identical" do
+      collection = %w[aaaa aabb]
+      expected = {}
+      assert_equal expected, BoxIDChecksum.find_nearly_identical_ids_for_collection(collection)
+    end
+
+    it "returns the two matching box IDs for the answer" do
+      collection = BOX_IDS # from box_ids.rb
+      expected = { id1: "aixwcbzrmdvpsjfgllthdyeoqe", id2: "aixwcbzrmdvpsjfgllthdyioqe" }
+      assert_equal expected, BoxIDChecksum.find_nearly_identical_ids_for_collection(collection)
     end
   end
 end
