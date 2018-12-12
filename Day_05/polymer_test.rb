@@ -43,4 +43,42 @@ describe "Polymers" do
       assert_equal expected, @subject.cancel_units_of_opposite_polarity(polymer)
     end
   end
+
+  describe "remove units for letter" do
+    before do
+      @subject = Polymers.new
+    end
+
+    it "removes all 'a' and 'A' from example" do
+      polymer = "dabAcCaCBAcCcaDA"
+      expected = "dbcCCBcCcD"
+      reacted_polymer = "dbCBcD"
+      assert_equal expected, @subject.remove_units_for_letter(polymer, 'a')
+      assert_equal reacted_polymer, @subject.cancel_units_of_opposite_polarity(expected)
+    end
+
+    it "removes all 'b' and 'B' from example" do
+      polymer = "dabAcCaCBAcCcaDA"
+      expected = "daAcCaCAcCcaDA"
+      reacted_polymer = "daCAcaDA"
+      assert_equal expected, @subject.remove_units_for_letter(polymer, 'b')
+      assert_equal reacted_polymer, @subject.cancel_units_of_opposite_polarity(expected)
+    end
+
+    it "removes all 'c' and 'C' from example" do
+      polymer = "dabAcCaCBAcCcaDA"
+      expected = "dabAaBAaDA"
+      reacted_polymer = "daDA"
+      assert_equal expected, @subject.remove_units_for_letter(polymer, 'c')
+      assert_equal reacted_polymer, @subject.cancel_units_of_opposite_polarity(expected)
+    end
+
+    it "removes all 'd' and 'D' from example" do
+      polymer = "dabAcCaCBAcCcaDA"
+      expected = "abAcCaCBAcCcaA"
+      reacted_polymer = "abCBAc"
+      assert_equal expected, @subject.remove_units_for_letter(polymer, 'd')
+      assert_equal reacted_polymer, @subject.cancel_units_of_opposite_polarity(expected)
+    end
+  end
 end
