@@ -6,10 +6,17 @@ class Polymers
   end
 
   def cancel_units_of_opposite_polarity(polymer)
+    while polymer_contains_opposing_units(polymer)
+      @polarity_matches.each do |pm|
+        polymer.slice! pm if polymer.include? pm
+      end
+    end
+
+    polymer.chars.count
   end
 
-  def current_unit_pairs(polymer)
-    polymer.chars.each_slice(2).map { |group| group.join }
+  def polymer_contains_opposing_units(polymer)
+    @polarity_matches.any? { |pm| polymer.include? pm }
   end
 
   def build_polarity_matches
@@ -25,6 +32,7 @@ class Polymers
     # The list should only contain pairs of uppercase/lowercase letters
     # (i.e. aA, Aa, bB, etc.) aF is not a valid pair for this list
     raise "Failed to build the list of contrasting polymers" if list.include? "aF"
+
     list
   end
 
@@ -34,5 +42,6 @@ end
 subject = Polymers.new
 subject.cancel_units_of_opposite_polarity("asdfqwer")
 
-
-
+File.open('data.txt').each do |line|
+  puts subject.cancel_units_of_opposite_polarity(line)
+end

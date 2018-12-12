@@ -14,57 +14,33 @@ describe "Polymers" do
     end
   end
 
-  # describe "cancel units of opposite polarity" do
-  #   before do
-  #     @subject = Polymers.new
-  #   end
-  #
-  #   it "returns empty string if given an empty string" do
-  #     polymer = ""
-  #     expected = ""
-  #     assert_equal expected, @subject.cancel_units_of_opposite_polarity(polymer)
-  #   end
-  #
-  #   it "returns empty string if it cancels all units of opposite polarity with one pair" do
-  #     polymer = "aA"
-  #     expected = ""
-  #     assert_equal expected, @subject.cancel_units_of_opposite_polarity(polymer)
-  #   end
-  #
-  #   it "returns empty string if it cancels all units of opposite polarity with two pairs" do
-  #     polymer = "aAbB"
-  #     expected = ""
-  #     assert_equal expected, @subject.cancel_units_of_opposite_polarity(polymer)
-  #   end
-  # end
-
-  describe "current unit pairs" do
+  describe "cancel units of opposite polarity" do
     before do
       @subject = Polymers.new
     end
 
-    it "returns nil for an empty string" do
+    it "returns empty string if given an empty string" do
       polymer = ""
-      expected = []
-      assert_equal expected, @subject.current_unit_pairs(polymer)
+      expected = ""
+      assert_equal expected, @subject.cancel_units_of_opposite_polarity(polymer)
     end
 
-    it "returns a list with 1 element for a string with 1 character" do
-      polymer = "a"
-      expected = ["a"]
-      assert_equal expected, @subject.current_unit_pairs(polymer)
-    end
-
-    it "returns a list with 1 element for a string with 2 characters" do
+    it "returns empty string if it cancels all units of opposite polarity with one pair" do
       polymer = "aA"
-      expected = ["aA"]
-      assert_equal expected, @subject.current_unit_pairs(polymer)
+      expected = ""
+      assert_equal expected, @subject.cancel_units_of_opposite_polarity(polymer)
     end
 
-    it "returns a list with 3 elements for a string with 6 characters" do
-      polymer = "aAbBcC"
-      expected = ["aA", "bB", "cC"]
-      assert_equal expected, @subject.current_unit_pairs(polymer)
+    it "returns empty string if it cancels all units of opposite polarity with two pairs" do
+      polymer = "aAbB"
+      expected = ""
+      assert_equal expected, @subject.cancel_units_of_opposite_polarity(polymer)
+    end
+
+    it "returns the remaining units joined as a polymer if no more units can be canceled" do
+      polymer = "dabAcCaCBAcCcaDA"
+      expected = "dabCBAcaDA"
+      assert_equal expected, @subject.cancel_units_of_opposite_polarity(polymer)
     end
   end
 end
