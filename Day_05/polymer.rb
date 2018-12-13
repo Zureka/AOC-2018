@@ -67,8 +67,7 @@ end
 puts """--- Part 1 ---
 Answer: #{part1_answer}
 
-"""
-puts """--- Part 2 ---
+--- Part 2 ---
 Answer: #{part2_answer}
 
 """
